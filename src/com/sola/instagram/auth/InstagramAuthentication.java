@@ -1,18 +1,14 @@
 package com.sola.instagram.auth;
 
-import com.sola.instagram.InstagramSession;
-import com.sola.instagram.auth.AccessToken;
+import java.util.HashMap;
+
+import org.json.JSONObject;
+
 import com.sola.instagram.exception.InstagramException;
 import com.sola.instagram.io.PostMethod;
 import com.sola.instagram.io.UriFactory;
 import com.sola.instagram.model.User;
 import com.sola.instagram.util.UriConstructor;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class InstagramAuthentication {
 	String redirectUri;
@@ -58,7 +54,9 @@ public class InstagramAuthentication {
 		args.put("client_id", getClientId());
 		args.put("redirect_uri", getRedirectUri());
 		args.put("response_type", "code");
-		args.put("scope", "likes+comments+relationships+basic");
+		if(getScope() != null && getScope() != "" ) {
+			args.put("scope", getScope());
+		}
 		return (new UriConstructor()).constructUri(
 				UriFactory.Auth.USER_AUTHORIZATION, args, false);
 	}
